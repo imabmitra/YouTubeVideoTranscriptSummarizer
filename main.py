@@ -45,7 +45,7 @@ def get_gemini_response(transcript_txt):
     return response.text
 
 st.header("YouTube Video Transcript Summarizer")    
-st.subheader("Powered By- Google Gemini Pro")    
+st.subheader("Powered By- Google Gemini Pro | Creator- Abhishek (https://github.com/imabmitra/) ")    
 vid_link=st.text_input("Please enter youtube video URL")
 language_option = st.selectbox('Select response language',('English', 'Hindi'))
 language_limit_option = st.selectbox('Select word limit',('250', '350', '450', '550'))
