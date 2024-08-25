@@ -12,9 +12,6 @@ def get_video_transcript(video_url):
     video_id=video_url.split("=")[1]
     if("&" in video_id):
         video_id=video_url.split("&")[0]
-
-    transcript_text=yt_api.get_transcript(video_id)
-    print(transcript_text)  
     try:
         transcript_text=yt_api.get_transcript(video_id,languages=['hi', 'en'])
 
