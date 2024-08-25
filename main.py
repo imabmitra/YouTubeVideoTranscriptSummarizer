@@ -8,11 +8,14 @@ load_dotenv()
 genai.configure(api_key=os.environ["GOOGLE_API_KEY"])
 
 
-def get_video_transcript(video_url):        
+def get_video_transcript(video_url):      
+    video_id=video_url.split("=")[1]
+    if("&" in video_id):
+        video_id=video_url.split("&")[0]
+
+    transcript_text=yt_api.get_transcript(video_id)
+    print(transcript_text)  
     try:
-        video_id=video_url.split("=")[1]
-        if("&" in video_id):
-            video_id=video_url.split("&")[0]
         transcript_text=yt_api.get_transcript(video_id,languages=['hi', 'en'])
 
         transcript = ""
@@ -23,9 +26,6 @@ def get_video_transcript(video_url):
 
     except:
         try:
-            video_id=video_url.split("=")[1]
-            if("&" in video_id):
-                video_id=video_url.split("&")[0]
             transcript_list = yt_api.list_transcripts(video_id)
             transcript_text=transcript_list.find_generated_transcript(video_id,languages=['hi', 'en'])
 
