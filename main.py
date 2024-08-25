@@ -40,12 +40,12 @@ def get_video_transcript(video_url):
             print("Video does not have transcription")
 
 def get_gemini_response(transcript_txt):
-    model=genai.GenerativeModel("gemini-pro")
+    model=genai.GenerativeModel("gemini-1.5-flash")
     response=model.generate_content(prompt+transcript_txt)
     return response.text
 
 st.header("YouTube Video Transcript Summarizer")    
-st.subheader("Powered By- Google Gemini Pro")
+st.subheader("Powered By- Google Gemini 1.5 Flash")
 st.markdown("Creator- Abhishek (https://github.com/imabmitra/)")    
 vid_link=st.text_input("Please enter youtube video URL")
 language_option = st.selectbox('Select response language',('English', 'Hindi'))
