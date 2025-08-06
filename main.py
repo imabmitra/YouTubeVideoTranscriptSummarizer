@@ -1,4 +1,4 @@
-from youtube_transcript_api import YouTubeTranscriptApi as yt_api
+from youtube_transcript_api import YouTubeTranscriptApi
 import streamlit as st
 import os
 import google.generativeai as genai
@@ -6,25 +6,25 @@ from dotenv import load_dotenv
 load_dotenv()
 
 genai.configure(api_key=os.environ["GOOGLE_API_KEY"])
-
+yt_api=YouTubeTranscriptApi()
 
 def get_video_transcript(video_url):      
     video_id=video_url.split("=")[1]
     if("&" in video_id):
         video_id=video_url.split("&")[0]
+    
     try:
-        transcript_text=yt_api.get_transcript(video_id,languages=['hi', 'en'])
+        transcript_text=yt_api.fetch(video_id,languages=['hi', 'en'])
 
         transcript = ""
         for i in transcript_text:
-            transcript += " " + i["text"]
-
+            transcript += " " + i.text	
         return transcript
 
     except:
         try:
-            transcript_list = yt_api.list_transcripts(video_id)
-            transcript_text=transcript_list.find_generated_transcript(video_id,languages=['hi', 'en'])
+            transcript_list = yt_api.list(video_id)
+            transcript_text=transcript_list.find_transcript(['hi', 'en'])
 
             transcript = ""
             for i in transcript_text:
@@ -37,12 +37,12 @@ def get_video_transcript(video_url):
             print("Video does not have transcription")
 
 def get_gemini_response(transcript_txt):
-    model=genai.GenerativeModel("gemini-1.5-flash")
+    model=genai.GenerativeModel("gemini-2.0-flash")
     response=model.generate_content(prompt+transcript_txt)
     return response.text
 
 st.header("YouTube Video Transcript Summarizer")    
-st.subheader("Powered By- Google Gemini 1.5 Flash")
+st.subheader("Powered By- Google Gemini 2.0 Flash")
 st.markdown("Creator- Abhishek (https://github.com/imabmitra/)")    
 vid_link=st.text_input("Please enter youtube video URL")
 language_option = st.selectbox('Select response language',('English', 'Hindi'))
